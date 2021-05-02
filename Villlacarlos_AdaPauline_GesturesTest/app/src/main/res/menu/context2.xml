@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="option tv2 a"
+        android:id="@+id/tv2a" />
+
+    <item
+        android:title="option tv2 B"
+        android:id="@+id/tv2b" />
+</menu>

@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import java.util.Random;
 
 public class Enemy {
-    //bitmap for the enemy
     private Bitmap enemy1, enemy2, enemy3, enemy4, enemy5;
 
     // x and y coordinates
@@ -24,23 +23,21 @@ public class Enemy {
     //animation counter
     int enemyCounter =1 ;
 
-    //sizes
     int width, height;
 
     //creating rect object to detect collision
     private Rect detectCollision;
 
     public Enemy(Context context, int screenX, int screenY){
-        //bitmap from the drawable resource
         enemy1 = BitmapFactory.decodeResource(context.getResources(),R.drawable.frame0001);
         enemy2 = BitmapFactory.decodeResource(context.getResources(),R.drawable.frame0002);
         enemy3 = BitmapFactory.decodeResource(context.getResources(),R.drawable.frame0003);
         enemy4 = BitmapFactory.decodeResource(context.getResources(),R.drawable.frame0004);
         enemy5 = BitmapFactory.decodeResource(context.getResources(),R.drawable.frame0005);
 
-        //rescaling the sizes
         width = (int) (screenX / 10);
         height = (int) (screenX / 10);
+
         enemy1 = Bitmap.createScaledBitmap(enemy1,width,height,false);
         enemy2 = Bitmap.createScaledBitmap(enemy2,width,height,false);
         enemy3 = Bitmap.createScaledBitmap(enemy3,width,height,false);
@@ -59,14 +56,12 @@ public class Enemy {
         x = screenX;
         y = random.nextInt(maxY) - enemy1.getHeight();
 
-        //initializing the rect object
         detectCollision = new Rect(x,y, enemy1.getWidth(), enemy1.getHeight());
 
     }
 
     public void update(int playerSpeed){
         //decreasing x coordinate so that enemy will move right to left
-        //x -= playerSpeed;
         x -= speed;
 
         //if enemy reaches the left edge

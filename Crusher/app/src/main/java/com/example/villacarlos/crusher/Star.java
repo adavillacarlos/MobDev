@@ -21,8 +21,6 @@ public class Star {
         Random generator = new Random();
         speed = generator.nextInt(10);
 
-        //generating a random coordinate
-        //but keeping the coordinate inside the screen size
         x = generator.nextInt(maxX);
         y = generator.nextInt(maxY);
     }
@@ -44,8 +42,6 @@ public class Star {
     }
 
     public float getStarWidth() {
-        //Making the star width random so that
-        //it will give a real look
         float minX = 1.0f;
         float maxX = 4.0f;
         Random rand = new Random();

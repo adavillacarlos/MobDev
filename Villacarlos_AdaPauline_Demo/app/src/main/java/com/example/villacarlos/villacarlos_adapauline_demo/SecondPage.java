@@ -15,7 +15,7 @@ EditText et2;
         setContentView(R.layout.activity_second_page);
         et2 = (EditText)findViewById(R.id.editTextSecondPage);
         Intent i = getIntent();
-//        String str = i.getStringExtra("key1").toString();
+//      String str = i.getStringExtra("key1").toString();
         Bundle bi = i.getExtras();
         String str = bi.getString("key1").toString();
 

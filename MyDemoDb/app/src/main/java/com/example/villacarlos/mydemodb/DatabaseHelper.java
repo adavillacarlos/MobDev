@@ -26,7 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //table creation
-        String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + CUSTOMER_NAME + " TEXT, " + CUSTOMER_AGE + " INT, " + ACTIVE_CUSTOMER + " BOOL)";
+        String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + CUSTOMER_NAME + " TEXT, " + CUSTOMER_AGE + " INT, " + ACTIVE_CUSTOMER + " BOOL)";
         db.execSQL(createTableStatement);
     }
 
@@ -69,11 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             }while(cursor.moveToNext());
 
-        } else{
-
         }
-
-
         cursor.close();
         db.close();
         return returnList;
@@ -103,4 +100,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else
             return true;
     }
+
+
+    // or implement the update
+    public boolean updateModel(CustomerModel cm){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CUSTOMER_NAME,cm.getName());
+        cv.put(CUSTOMER_AGE,cm.getAge());
+        cv.put(ACTIVE_CUSTOMER,cm.isActive());
+        db.update("CUSTOMER_TABLE",cv,"ACTIVE_CUSTOMER=?",new String[]{String.valueOf(ACTIVE_CUSTOMER)});
+        return true;
+    }
+
 }

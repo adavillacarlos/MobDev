@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Movie Library</string>
+    <string name="add_movie">Add Movie</string>
+    <string name="director_s_name">Director\'s Name</string>
+    <string name="movie_summary">Movie Summary</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="date">Date</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="year">Year</string>
+    <string name="_1">1</string>
+    <string name="director">Director</string>
+    <string name="summary">Summary</string>
+    <string name="title_1">Title 1</string>
+    <string name="_2009">2009</string>
+</resources>

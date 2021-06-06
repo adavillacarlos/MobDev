@@ -9,11 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
-import android.os.Build;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,74 +17,44 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 public class GameView extends SurfaceView implements Runnable {
-    //boolean variable to track if the game is playing or not
     volatile boolean playing;
-
-    //the game thread
     private Thread gameThread = null;
 
-    //adding the player to the class
     private Player player;
-
-    //adding enemies
     private Enemy[] enemies;
 
-    //Adding 4 enemies but may increase
     private  int enemyCount = 4;
 
-    //These objects will be used for drawing
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
 
-    //Adding a background
     Bitmap background;
 
     int screenX, screenY;
-
-    //Adding an stars list
     private ArrayList<Star> stars = new ArrayList<Star>();
 
-    //boom object to blast
-    private Boom boom;
+    private Blast blast;
 
-    //to count the number of Misses
     int countMisses;
 
-    //indicator that the enemy has just entered the game screen
     boolean flag ;
-
-    //an indicator if the game is Over
     private boolean isGameOver ;
-
-    //the score holder
     int score;
-
-    //the high Scores Holder
     int highScore[] = new int[4];
-
-    //Shared Preferences to store the High Scores
     SharedPreferences sharedPreferences;
 
     Context context;
-    private SoundPool soundPool;
-    private int sound;
 
-    //bg music
     static MediaPlayer bgmusic;
     final MediaPlayer gameoverSound;
     final MediaPlayer enemyKill;
 
-
-    //Class constructor
     public GameView(Context context,int screenX,int screenY){
         super(context);
 
-
-        //initializing the player
         player = new Player(context, screenX, screenY);
 
-        //initializing drawing objects
         surfaceHolder = getHolder();
         paint = new Paint();
 
@@ -97,27 +63,22 @@ public class GameView extends SurfaceView implements Runnable {
 
         background = BitmapFactory.decodeResource(getResources(),R.drawable.background);
 
-        //adding 100 stars you may increase the number
         int starNums = 100;
         for (int i = 0; i < starNums; i++) {
             Star s  = new Star(screenX, screenY);
             stars.add(s);
         }
 
-        //initializing enemy object array
         enemies = new Enemy[enemyCount];
         for(int i=0; i<enemyCount; i++){
             enemies[i] = new Enemy(context, screenX, screenY);
         }
 
-        //initializing boom object
-        boom = new Boom(context);
+        blast = new Blast(context);
 
-        //game over condition
         countMisses = 0;
         isGameOver = false;
 
-        //setting the score to 0 initially
         score = 0;
         sharedPreferences = context.getSharedPreferences("game",Context.MODE_PRIVATE);
 
@@ -141,11 +102,8 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while(playing){
-            //update the frame
             update();
-            //draw the frame
             draw();
-            //control
             control();
 
         }
@@ -155,8 +113,8 @@ public class GameView extends SurfaceView implements Runnable {
         player.update();
 
         //setting boom outside the screen
-        boom.setX(-250);
-        boom.setY(-250);
+        blast.setX(-250);
+        blast.setY(-250);
 
         //Updating the stars with player speed
         for (Star s : stars) {
@@ -171,13 +129,12 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             enemies[i].update(player.getSpeed());
-            //if collision occurs with the player
             if(Rect.intersects(player.getDetectCollision(), enemies[i].getDetectCollision())){
                 //incrementing score every collision
                 score++;
                 //displaying boom at that location
-                boom.setX(enemies[i].getX());
-                boom.setY(enemies[i].getY());
+                blast.setX(enemies[i].getX());
+                blast.setY(enemies[i].getY());
                 enemyKill.start();
 
                 //move the enemy outside the left page
@@ -198,6 +155,7 @@ public class GameView extends SurfaceView implements Runnable {
                             bgmusic.stop();
                             //play the game over sound
                             gameoverSound.start();
+
                             //Assigning the scores to the highscore integer array
                             for(i=0;i<4;i++) {
                                 if (highScore[i] < score) {
@@ -205,7 +163,7 @@ public class GameView extends SurfaceView implements Runnable {
                                     break;
                                 }
                             }
-                            //storing the scores through shared Preferences
+
                             SharedPreferences.Editor e = sharedPreferences.edit();
                             for(i=0;i<4;i++){
                                 int j = i+1;
@@ -227,11 +185,11 @@ public class GameView extends SurfaceView implements Runnable {
         //if surface is valid
 
         if(surfaceHolder.getSurface().isValid()){
+
             //lock the canvas
             canvas = surfaceHolder.lockCanvas();
-            Rect backgroundRect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-            //draw a background image for canvas
+            Rect backgroundRect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
             canvas.drawBitmap(background,null,backgroundRect,null);
 
             //setting the paint color to white to draw the stars
@@ -242,12 +200,6 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawPoint(s.getX(), s.getY(), paint);
             }
 
-            //drawing the score on the game screen
-            paint.setTextSize(40);
-            canvas.drawText("Score:"+score,100,50,paint);
-
-            paint.setTextSize(40);
-            canvas.drawText("Misses:"+countMisses,300,50,paint);
 
             //draw the player
             canvas.drawBitmap(
@@ -256,6 +208,7 @@ public class GameView extends SurfaceView implements Runnable {
                     player.getY(),
                     paint);
 
+            //draw the enemy
             for(int i=0; i< enemyCount; i++){
                 canvas.drawBitmap(
                         enemies[i].getEnemy(),
@@ -265,15 +218,23 @@ public class GameView extends SurfaceView implements Runnable {
                 );
             }
 
-            //drawing boom image
+            //drawing blast image
             canvas.drawBitmap(
-                    boom.getBitmap(),
-                    boom.getX(),
-                    boom.getY(),
+                    blast.getBitmap(),
+                    blast.getX(),
+                    blast.getY(),
                     paint
             );
 
-            //draw game Over when the game is over
+            //drawing the score on the game screen
+            paint.setTextSize(40);
+            canvas.drawText("Score:"+score,100,50,paint);
+
+            //drawing the misses on the game screen
+            paint.setTextSize(40);
+            canvas.drawText("Misses:"+countMisses,300,50,paint);
+
+            //draw game over when the game is over
             if(isGameOver){
                 paint.setTextSize(150);
                 paint.setTextAlign(Paint.Align.CENTER);

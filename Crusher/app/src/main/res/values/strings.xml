@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Crusher</string>
+    <string name="volumeup">volumeUp</string>
+    <string name="play_now">play now</string>
+    <string name="high_score">high score</string>
+    <string name="crusher">Crusher</string>
+</resources>

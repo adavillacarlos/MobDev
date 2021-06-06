@@ -4,19 +4,17 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class Boom {
+public class Blast {
 
     //create bitmap
     private Bitmap e1,e2,e3,e4,e5,e6,e7,e8, e9, e10;
     int explosionCounter = 1;
 
-    int width, height;
-
     //coordinate variables
     private int x,y;
 
     //constructor
-    public Boom(Context context) {
+    public Blast(Context context) {
         //getting boom image from drawable resource
         e1 = BitmapFactory.decodeResource (context.getResources(), R.drawable.e1);
         e2 = BitmapFactory.decodeResource (context.getResources(), R.drawable.e2);
@@ -29,10 +27,8 @@ public class Boom {
         e9 = BitmapFactory.decodeResource (context.getResources(), R.drawable.e9);
         e10 = BitmapFactory.decodeResource (context.getResources(), R.drawable.e10);
 
-
         //setting the coordinate outside the screen
         //so that it won't shown up in the screen
-
         x = -250;
         y = -250;
     }
@@ -95,10 +91,6 @@ public class Boom {
 
         explosionCounter=1;
         return e10;
-    }
-
-    public void setBitmap(Bitmap e1) {
-        this.e1 = e1;
     }
 
     public int getX() {

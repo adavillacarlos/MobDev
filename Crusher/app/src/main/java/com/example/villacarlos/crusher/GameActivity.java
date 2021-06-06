@@ -9,7 +9,6 @@ import android.view.WindowManager;
 
 public class GameActivity extends AppCompatActivity {
 
-    //declaring game view
     private  GameView gameView;
 
     @Override
@@ -23,8 +22,6 @@ public class GameActivity extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size);
 
-        //Initializing game view object
-        //this time we are also passing the screen size to the GameView constructor
         gameView = new GameView(this, size.x, size.y);
         setContentView(gameView);
     }

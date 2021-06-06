@@ -7,12 +7,9 @@ import android.graphics.Rect;
 
 
 public class Player {
-    //Bitmap to get character from image
     private Bitmap f1,f2,dead;
 
-    //coordinate
-    private int x=0;
-    private int y=0;
+    private int x=0,y=0;
 
     //motion speed of the character
     private int speed = 0;
@@ -35,16 +32,13 @@ public class Player {
     //limit the bounds of the ship's speed
     private final int MIN_SPEED = 1, MAX_SPEED = 35;
 
-    //creating a rect
     private Rect detectCollision;
 
-    //constructor
     public Player(Context context, int screenX, int screenY){
         x = 75;
         y=50;
         speed =1;
 
-        //Getting the bitmap from drawable resource
         f1 = BitmapFactory.decodeResource(context.getResources(),R.drawable.f1);
         f2 = BitmapFactory.decodeResource(context.getResources(),R.drawable.f2);
         dead = BitmapFactory.decodeResource(context.getResources(),R.drawable.fdead);
@@ -52,24 +46,18 @@ public class Player {
         width = (int) (screenX / 7);
         height = (int) (screenX / 7);
 
-        //Scaling it down, have to fix the screen ratio here
         f1 = Bitmap.createScaledBitmap(f1,width,height,false);
         f2 = Bitmap.createScaledBitmap(f2,width,height,false);
         dead = Bitmap.createScaledBitmap(dead,width,height,false);
 
-        //calculating maxY
         maxY = screenY - f1.getHeight();
 
-        //top edge's y point is 0 so min y will always be zero
         minY = 0;
 
         //setting the boosting value to false initially
         boosting = false;
 
-        //initializing rect object
         detectCollision = new Rect(x,y,f1.getWidth(), f1.getHeight());
-
-
     }
 
     //setting boosting true
@@ -111,7 +99,6 @@ public class Player {
             y = maxY;
         }
 
-        //adding top... to the rect object
         detectCollision.left = x;
         detectCollision.top = y;
         detectCollision.right = x + f1.getWidth();
@@ -131,11 +118,6 @@ public class Player {
         return f2;
     }
 
-    //if the player is dead
-    Bitmap getDead(){
-        return dead;
-    }
-
     public int getX() {
         return x;
     }
@@ -147,7 +129,4 @@ public class Player {
     public int getSpeed() {
         return speed;
     }
-
-
-
 }
